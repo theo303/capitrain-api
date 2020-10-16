@@ -1,5 +1,5 @@
 package model
 
 type Request struct {
-	IP string `json:"ip"`
+	Address string `json:"address"`
 }
