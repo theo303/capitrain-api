@@ -46,6 +46,8 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Error during traceroute"+err.Error())
 	} 
 
+	out = FillLocations(out)
+
 	w.WriteHeader(http.StatusCreated)
 
 	json.NewEncoder(w).Encode(out)
