@@ -41,17 +41,19 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Address = " + newRequest.Address)
 
-	out, err := Traceroute(newRequest.Address)
+	route, err := Traceroute(newRequest.Address)
 	if err != nil {
 		fmt.Fprintf(w, "Error during traceroute"+err.Error())
 	} 
 
-	out = FillLocations(out)
+	route = FillLocations(route)
 
-	valueString, _ := json.Marshal(out)
+	valueString, _ := json.Marshal(route)
 	Store(newRequest.Address, string(valueString))
+
+	route = model.ClearHopsWithoutLocation(route)
 
 	w.WriteHeader(http.StatusCreated)
 
-	json.NewEncoder(w).Encode(out)
+	json.NewEncoder(w).Encode(route)
 }

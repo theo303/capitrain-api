@@ -15,3 +15,13 @@ type Location struct {
 	Latitude	string	`json:"latitude"`
 	Longitude	string	`json:"longitude"`
 }
+
+func ClearHopsWithoutLocation(route Route) Route {
+	var new_hops Route
+	for _, h := range route.Hops {
+		if h.Location.Longitude != "" {
+			new_hops.Hops = append(new_hops.Hops, h)
+		}
+	}
+	return new_hops
+}
