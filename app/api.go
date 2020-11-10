@@ -21,7 +21,7 @@ func handleRequests() error {
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/traceroute", traceRoute).Methods("POST")
 
-	fmt.Println("Starting router2...")
+	fmt.Println("Starting router...")
 	return http.ListenAndServe(":8080", router)
 }
 
@@ -47,6 +47,9 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 	} 
 
 	out = FillLocations(out)
+
+	valueString, _ := json.Marshal(out)
+	Store(newRequest.Address, string(valueString))
 
 	w.WriteHeader(http.StatusCreated)
 
