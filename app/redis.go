@@ -7,7 +7,7 @@ import (
 
 func Store(key string, value string) error {
 	rdb := redis.NewClient(&redis.Options{
-        Addr:     "localhost:6379",
+        Addr:     "localhost:" + Conf.REDIS_PORT,
         Password: "", // no password set
         DB:       0,  // use default DB
 	})

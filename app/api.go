@@ -11,7 +11,11 @@ import (
 	"github.com/zgegonline/capitrain-api/model"
 )
 
+var Conf Configuration
+
 func Start() {
+	fmt.Println("Loading configuration")
+	Conf = GetConfig()
 	fmt.Println("Starting API...")
 	log.Fatal(handleRequests())
 }
@@ -21,8 +25,8 @@ func handleRequests() error {
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/traceroute", traceRoute).Methods("POST")
 
-	fmt.Println("Starting router...")
-	return http.ListenAndServe(":8080", router)
+	fmt.Println("Starting router on port : " + Conf.API_PORT + "...")
+	return http.ListenAndServe(":" + Conf.API_PORT, router)
 }
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
@@ -38,8 +42,6 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.Unmarshal(reqBody, &newRequest)
-
-	fmt.Println("Address = " + newRequest.Address)
 
 	route, err := Traceroute(newRequest.Address)
 	if err != nil {
