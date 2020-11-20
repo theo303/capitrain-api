@@ -12,14 +12,14 @@ type Hop struct {
 }
 
 type Location struct {
-	Latitude	string	`json:"latitude"`
-	Longitude	string	`json:"longitude"`
+	Latitude	float64	`json:"lat"`
+	Longitude	float64	`json:"lon"`
 }
 
 func ClearHopsWithoutLocation(route Route) Route {
 	var new_hops Route
 	for _, h := range route.Hops {
-		if h.Location.Longitude != "" {
+		if h.Location.Longitude != 0.0 {
 			new_hops.Hops = append(new_hops.Hops, h)
 		}
 	}
