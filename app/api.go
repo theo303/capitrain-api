@@ -24,6 +24,7 @@ func handleRequests() error {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/traceroute", traceRoute).Methods("POST")
+	router.HandleFunc("/all-routes", getAllRoutes).Methods("GET")
 
 	fmt.Println("Starting router on port : " + Conf.API_PORT + "...")
 	return http.ListenAndServe(":" + Conf.API_PORT, router)
@@ -49,13 +50,37 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 	} 
 
 	route = FillLocations(route)
-
-	valueString, _ := json.Marshal(route)
-	Store(newRequest.Address, string(valueString))
-
 	route = model.ClearHopsWithoutLocation(route)
 
-	w.WriteHeader(http.StatusCreated)
+	storeRoute(newRequest.Address, route)
 
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(route)
+}
+
+func storeRoute(address string, route model.Route) {
+	if (Conf.REDIS_PORT != "-1") {
+		valueString, _ := json.Marshal(route)
+		Store(address, string(valueString))
+		AddToAddressList(address)
+	}
+}
+
+func getAllRoutes(w http.ResponseWriter, r *http.Request) {
+	if (Conf.REDIS_PORT == "-1") {
+		fmt.Fprintf(w, "REDIS is disabled (add valid port in config file)")
+		return
+	}
+	addressList, _ := GetAddressList()			//retrieve address list in DB
+	
+	var routes []model.Route
+	
+	for _, address := range addressList {		//get route in DB for each address
+		val, _ := Get(address)
+		var route model.Route
+		json.Unmarshal([]byte(val), &route)
+		routes = append(routes, route)
+	}
+
+	json.NewEncoder(w).Encode(routes)
 }

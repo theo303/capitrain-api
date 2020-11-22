@@ -10,7 +10,6 @@ import (
 	"github.com/zgegonline/capitrain-api/model"
 )
 	
-const URL_IPWHOIS = "http://ipwhois.app/json/"
 const URL_IPAPI = "http://ip-api.com/json/"
 
 func FillLocations(route model.Route) model.Route {
@@ -24,9 +23,27 @@ func FillLocations(route model.Route) model.Route {
 	return route
 }
 
-func getLocation(ip string) (model.Location) {
-	fmt.Println(URL_IPAPI + ip)
-	
+func getLocation(ip string) model.Location {
+	if (Conf.REDIS_PORT == "-1") {		//DB disabled
+		return getLocationFromAPI(ip)
+	}
+
+
+	val, _ := Get(ip + REDIS_LOCATION_SUFFIXE);
+	if val == "" {
+		fmt.Println("nil db")
+		return getLocationFromAPI(ip)
+	} else {
+		fmt.Println(val)
+		var location model.Location
+		json.Unmarshal([]byte(val), &location)
+		fmt.Println(location)
+		return location
+	}
+
+}
+
+func getLocationFromAPI(ip string) (model.Location) {
 	resp, err := http.Get(URL_IPAPI + ip)
 	
 	if err != nil {
@@ -36,14 +53,20 @@ func getLocation(ip string) (model.Location) {
 
 	defer resp.Body.Close()
     bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(bodyBytes))
-    // Convert response body to location struct
 	
 	var location model.Location					
 	
 	json.Unmarshal(bodyBytes, &location)
 
-	fmt.Println(location)
+	storeLocation(ip, location)
 	
 	return location
 }
+
+func storeLocation(ip string, location model.Location) {
+	if (Conf.REDIS_PORT != "-1") {
+		valueString, _ := json.Marshal(location)
+		Store(ip + REDIS_LOCATION_SUFFIXE, string(valueString))
+	}
+}
+
