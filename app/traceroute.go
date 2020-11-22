@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"os/exec"
 	"strings"
-	"fmt"
 
 	"github.com/zgegonline/capitrain-api/model"
 )
@@ -24,7 +23,6 @@ func Traceroute(address string) (model.Route, error) {
 func parse(out string) model.Route {
 	var route model.Route
 	lines := strings.Split(out, "\n")
-	fmt.Println("number of lines", len(lines))
 	for i, line := range lines {					// loop over lines
 		if i != 0 && i != (len(lines) - 1) {		// first and last lines contains nothing usefull
 			field := strings.Split(strings.TrimSpace(line), " ")		// trim then split line 
