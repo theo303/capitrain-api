@@ -27,9 +27,6 @@ Main feature is a traceroute made by the API, you can request by using this endp
 ```
 After doing the traceroute, the API will find locations of the different IPs using [ip-api](https://ip-api.com/).
 Each location will be stored in the redis database under the following key : ip + "/loc"
-```
-  
-```
 
 The API will return a json containing the address of the traceroute, all hops that it contains and theirs locations. This json is stored in the Redis database using the address as key.
 
