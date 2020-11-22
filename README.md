@@ -6,8 +6,8 @@ Tested on Debian 10. It will not work on windows because it uses the "traceroute
 With a [correctly configured](https://golang.org/doc/install#testing) Go toolchain:
 
 ```sh
-go get -u github.com/zgegonline/capitrain-api
-cd $GOPATH/src/github.com/zgegonline/capitrain-api
+go get -u github.com/theo303/capitrain-api
+cd $GOPATH/src/github.com/theo303/capitrain-api
 go build
 ./capitrain-api
 ```
