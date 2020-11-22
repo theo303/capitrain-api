@@ -34,3 +34,5 @@ Each location will be stored in the redis database under the following key : ip 
 The API will return a json containing the address of the traceroute, all hops that it contains and theirs locations. This json is stored in the Redis database using the address as key.
 
 ### Get all routes stored in database
+
+Using the GET endpoint /all-routes will return a json containing all routes that have been stored in the redis database.
