@@ -40,6 +40,7 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Fprintf(w, "Error reading request")
+		return
 	}
 
 	json.Unmarshal(reqBody, &newRequest)
@@ -47,6 +48,7 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 	route, err := Traceroute(newRequest.Address)
 	if err != nil {
 		fmt.Fprintf(w, "Error during traceroute"+err.Error())
+		return
 	} 
 
 	route = FillLocations(route)
