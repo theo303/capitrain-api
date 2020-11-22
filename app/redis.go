@@ -35,6 +35,7 @@ func AddToAddressList(address string) error{
         DB:       Conf.REDIS_DB,  
 	})
 
+	rdb.LRem(context.Background(), REDIS_ADDRESS_LIST, 1, address)				//remove route if present in list
 	return rdb.LPush(context.Background(), REDIS_ADDRESS_LIST, address).Err()
 }
 
