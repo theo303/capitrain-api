@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/zgegonline/capitrain-api/model"
+	"github.com/theo303/capitrain-api/model"
 )
 
 var Conf Configuration

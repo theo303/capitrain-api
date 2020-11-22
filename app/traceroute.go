@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/zgegonline/capitrain-api/model"
+	"github.com/theo303/capitrain-api/model"
 )
 
 func Traceroute(address string) (model.Route, error) {

@@ -1,4 +1,4 @@
-module github.com/zgegonline/capitrain-api
+module github.com/theo303/capitrain-api
 
 go 1.15
 

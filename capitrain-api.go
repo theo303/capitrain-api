@@ -1,6 +1,6 @@
 package main
 
-import "github.com/zgegonline/capitrain-api/app"
+import "github.com/theo303/capitrain-api/app"
 
 func main() {
 	app.Start()

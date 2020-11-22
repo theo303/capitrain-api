@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	
-	"github.com/zgegonline/capitrain-api/model"
+	"github.com/theo303/capitrain-api/model"
 )
 	
 const URL_IPAPI = "http://ip-api.com/json/"
