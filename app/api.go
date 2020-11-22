@@ -51,18 +51,20 @@ func traceRoute(w http.ResponseWriter, r *http.Request) {
 
 	route = FillLocations(route)
 	route = model.ClearHopsWithoutLocation(route)
+	route.Address = newRequest.Address
 
-	storeRoute(newRequest.Address, route)
+
+	storeRoute(route)
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(route)
 }
 
-func storeRoute(address string, route model.Route) {
+func storeRoute(route model.Route) {
 	if (Conf.REDIS_PORT != "-1") {
 		valueString, _ := json.Marshal(route)
-		Store(address, string(valueString))
-		AddToAddressList(address)
+		Store(route.Address, string(valueString))
+		AddToAddressList(route.Address)
 	}
 }
 

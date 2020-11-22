@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"log"
 	"encoding/json"
 	"net/http"
@@ -30,14 +29,11 @@ func getLocation(ip string) model.Location {
 
 
 	val, _ := Get(ip + REDIS_LOCATION_SUFFIXE);
-	if val == "" {
-		fmt.Println("nil db")
+	if val == "" {							//address has never been located
 		return getLocationFromAPI(ip)
-	} else {
-		fmt.Println(val)
+	} else {								//address is present in redis -> get location from redis
 		var location model.Location
 		json.Unmarshal([]byte(val), &location)
-		fmt.Println(location)
 		return location
 	}
 

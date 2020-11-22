@@ -1,6 +1,7 @@
 package model
 
 type Route struct {
+	Address string `json:"address"`
 	Hops []Hop `json:"hops"`
 }
 
