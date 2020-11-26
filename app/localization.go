@@ -14,7 +14,7 @@ const URL_IPAPI = "http://ip-api.com/json/"
 func FillLocations(route model.Route) model.Route {
 	for i, hop := range route.Hops {
 		if hop.Number == "1" {
-			hop.IP = "90.59.71.87"
+			hop.IP = PUBLIC_IP
 		}
 		l := getLocation(hop.IP)
 		route.Hops[i].Location = l

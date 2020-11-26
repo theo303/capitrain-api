@@ -12,12 +12,33 @@ import (
 )
 
 var Conf Configuration
+var PUBLIC_IP = "0.0.0.0"
 
 func Start() {
 	fmt.Println("Loading configuration")
 	Conf = GetConfig()
+	getPublicIP()
 	fmt.Println("Starting API...")
 	log.Fatal(handleRequests())
+}
+
+func getPublicIP() {
+	url := "https://api.ipify.org?format=text"	// we are using a pulib IP API, we're using ipify here, below are some others
+                                              // https://www.ipify.org
+                                              // http://myexternalip.com
+                                              // http://api.ident.me
+                                              // http://whatismyipaddress.com/api
+	resp, err := http.Get(url)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	ip, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("My IP is:%s\n", ip)
+	PUBLIC_IP = string(ip)
 }
 
 func handleRequests() error {
