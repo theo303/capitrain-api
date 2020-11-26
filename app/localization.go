@@ -13,7 +13,7 @@ const URL_IPAPI = "http://ip-api.com/json/"
 
 func FillLocations(route model.Route) model.Route {
 	for i, hop := range route.Hops {
-		if hop.Number == "1" {
+		if hop.Number == "1" {				//first IP is private IP so replace it with public IP
 			hop.IP = PUBLIC_IP
 		}
 		l := getLocation(hop.IP)
